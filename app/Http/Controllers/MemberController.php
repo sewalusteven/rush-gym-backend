@@ -15,7 +15,7 @@ class MemberController extends Controller
     public function index()
     {
         //
-        return MemberResource::collection(Member::paginate(10));
+        return MemberResource::collection(Member::all());
     }
 
     /**
@@ -34,13 +34,14 @@ class MemberController extends Controller
         //
         $member = Member::create([
             'name' => $request->input('name'),
-            'email' => $request->input('name'),
-            'phone_number' => $request->input('name'),
-            'membership_plan_id' => $request->input('name'),
-            'start_date' => $request->input('name'),
-            'end_date' => $request->input('name'),
+            'email' => $request->input('email'),
+            'phone_number' => $request->input('phone_number'),
+            'membership_plan_id' => $request->input('membership_plan_id'),
+            'start_date' => date('Y-m-d', strtotime($request->input('start_date'))),
+            'end_date' => date('Y-m-d', strtotime($request->input('end_date'))),
         ]);
-            return new MemberResource($member);
+
+        return new MemberResource($member);
     }
 
     /**
@@ -65,13 +66,26 @@ class MemberController extends Controller
     public function update(UpdateMemberRequest $request, int $member)
     {
         //
+        $member = Member::findOrFail($member);
+        $member->update([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'phone_number' => $request->input('phone_number'),
+            'membership_plan_id' => $request->input('membership_plan_id'),
+            'start_date' => $request->input('start_date'),
+            'end_date' => $request->input('end_date'),
+        ]);
+        return new MemberResource($member);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Member $member)
+    public function destroy(int $member)
     {
         //
+        $toBeDeleted = Member::findOrFail($member);
+        $toBeDeleted->delete();
+        return response(['message' => 'member deleted successfully']);
     }
 }

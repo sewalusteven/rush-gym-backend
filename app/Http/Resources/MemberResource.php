@@ -19,7 +19,6 @@ class MemberResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone_number,
-            'planId' => $this->membership_plan_id,
             'start' => $this->start_date,
             'end' => $this->end_date,
             'createdAt' => $this->created_at,
