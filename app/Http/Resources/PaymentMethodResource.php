@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class MembershipPlanResource extends JsonResource
+class PaymentMethodResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,12 +15,11 @@ class MembershipPlanResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-          'id' => $this->id,
-          'name' => $this->name,
-          'duration' => $this->duration,
-          'price' => $this->price,
-          'createdAt' => $this->created_at,
-          'members' => MemberResource::collection($this->members),
+            'id' => $this->id,
+            'method' => $this->method,
+            'sales' => SaleResource::collection($this->sales),
+            'createdAt' => $this->created_at
+
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePaymentMethodRequest;
 use App\Http\Requests\UpdatePaymentMethodRequest;
+use App\Http\Resources\PaymentMethodResource;
 use App\Models\PaymentMethod;
 
 class PaymentMethodController extends Controller
@@ -14,6 +15,7 @@ class PaymentMethodController extends Controller
     public function index()
     {
         //
+        return PaymentMethodResource::collection(PaymentMethod::all());
     }
 
     /**
@@ -30,14 +32,20 @@ class PaymentMethodController extends Controller
     public function store(StorePaymentMethodRequest $request)
     {
         //
+        $method =  PaymentMethod::create([
+            'method' => $request->input('method')
+        ]);
+        return new PaymentMethodResource($method);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(PaymentMethod $paymentMethod)
+    public function show(int $paymentMethod)
     {
         //
+        $method =  PaymentMethod::findOrFail($paymentMethod);
+        return new PaymentMethodResource($method);
     }
 
     /**
@@ -51,16 +59,24 @@ class PaymentMethodController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePaymentMethodRequest $request, PaymentMethod $paymentMethod)
+    public function update(UpdatePaymentMethodRequest $request, int $paymentMethod)
     {
         //
+        $method =  PaymentMethod::findOrFail($paymentMethod);
+        $method->update([
+            'method' => $request->input('method')
+        ]);
+        return new PaymentMethodResource($method);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PaymentMethod $paymentMethod)
+    public function destroy(int $paymentMethod)
     {
         //
+        $method =  PaymentMethod::findOrFail($paymentMethod);
+        $method->delete();
+        return response(['message' => 'method deleted successfully']);
     }
 }

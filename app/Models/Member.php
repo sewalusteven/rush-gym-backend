@@ -21,4 +21,8 @@ class Member extends Model
     {
         return $this->belongsTo(MembershipPlan::class);
     }
+    public function weightRecords()
+    {
+        return $this->hasMany(WeightRecord::class);
+    }
 }

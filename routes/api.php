@@ -3,6 +3,9 @@
 
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MembershipPlanController;
+use App\Http\Controllers\PaymentMethodController;
+use App\Http\Controllers\SaleController;
+use App\Http\Controllers\ServiceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,3 +26,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('/plans', MembershipPlanController::class);
 Route::apiResource('/members', MemberController::class);
+Route::apiResource('/sales', SaleController::class);
+Route::apiResource('/services', ServiceController::class);
+Route::apiResource('/payment-methods', PaymentMethodController::class);

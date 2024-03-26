@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSaleRequest;
 use App\Http\Requests\UpdateSaleRequest;
+use App\Http\Resources\SaleResource;
 use App\Models\Sale;
 
 class SaleController extends Controller
@@ -14,6 +15,7 @@ class SaleController extends Controller
     public function index()
     {
         //
+        return SaleResource::collection(Sale::paginate(20));
     }
 
     /**
@@ -30,14 +32,23 @@ class SaleController extends Controller
     public function store(StoreSaleRequest $request)
     {
         //
+        $sale = Sale::create([
+            'amount' => $request->input('amount'),
+            'service_id' => $request->input('serviceId'),
+            'payment_method_id' => $request->input('paymentMethodId'),
+            'narration' => $request->input('narration'),
+        ]);
+        return new SaleResource($sale);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Sale $sale)
+    public function show(int $sale)
     {
         //
+        $sale =  Sale::findOrFail($sale);
+        return new SaleResource($sale);
     }
 
     /**
@@ -51,16 +62,27 @@ class SaleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSaleRequest $request, Sale $sale)
+    public function update(UpdateSaleRequest $request, int $sale)
     {
         //
+        $sale =  Sale::findOrFail($sale);
+        $sale->update([
+            'amount' => $request->input('amount'),
+            'service_id' => $request->input('serviceId'),
+            'payment_method_id' => $request->input('paymentMethodId'),
+            'narration' => $request->input('narration'),
+        ]);
+        return new SaleResource($sale);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Sale $sale)
+    public function destroy(int $sale)
     {
         //
+        $sale =  Sale::findOrFail($sale);
+        $sale->delete();
+        return response(['message' => 'transaction deleted successfully']);
     }
 }

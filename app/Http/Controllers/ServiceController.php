@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
+use App\Http\Resources\ServiceResource;
 use App\Models\Service;
 
 class ServiceController extends Controller
@@ -14,6 +15,7 @@ class ServiceController extends Controller
     public function index()
     {
         //
+        return ServiceResource::collection(Service::all());
     }
 
     /**
@@ -30,14 +32,18 @@ class ServiceController extends Controller
     public function store(StoreServiceRequest $request)
     {
         //
+        $service = Service::create($request->validated());
+        return new ServiceResource($service);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Service $service)
+    public function show(int $service)
     {
         //
+        $service = Service::findOrFail($service);
+        return new ServiceResource($service);
     }
 
     /**
@@ -51,16 +57,22 @@ class ServiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateServiceRequest $request, Service $service)
+    public function update(UpdateServiceRequest $request, int $service)
     {
         //
+        $service = Service::findOrFail($service);
+        $service->update($request->validated());
+        return new ServiceResource($service);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Service $service)
+    public function destroy(int $service)
     {
         //
+        $service = Service::findOrFail($service);
+        $service->delete();
+        return response(['message' => 'service deleted successfully']);
     }
 }

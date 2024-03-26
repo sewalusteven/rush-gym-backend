@@ -11,7 +11,7 @@ class StoreSaleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,6 +23,9 @@ class StoreSaleRequest extends FormRequest
     {
         return [
             //
+            'amount' => 'required | numeric',
+            'serviceId' => 'required | numeric',
+            'paymentMethodId' => 'required | numeric',
         ];
     }
 }
