@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentMethod extends Model
 {
     use HasFactory;
-    protected $fillable = ['method'];
+    protected $fillable = ['method','details'];
 
     public function sales()
     {

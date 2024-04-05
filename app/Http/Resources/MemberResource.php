@@ -24,6 +24,7 @@ class MemberResource extends JsonResource
             'createdAt' => $this->created_at,
             'membershipPlan' => $this->membershipPlan,
             'weightRecords' => $this->weightRecords,
+            'sales' => $this->sales,
         ];
     }
 }

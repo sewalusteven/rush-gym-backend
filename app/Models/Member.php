@@ -25,4 +25,8 @@ class Member extends Model
     {
         return $this->hasMany(WeightRecord::class);
     }
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
+    }
 }

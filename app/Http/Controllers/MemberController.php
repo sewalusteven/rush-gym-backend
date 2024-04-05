@@ -6,6 +6,9 @@ use App\Http\Requests\StoreMemberRequest;
 use App\Http\Requests\UpdateMemberRequest;
 use App\Http\Resources\MemberResource;
 use App\Models\Member;
+use App\Models\MembershipPlan;
+use DateTime;
+use Exception;
 
 class MemberController extends Controller
 {
@@ -28,17 +31,41 @@ class MemberController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * @throws Exception
      */
     public function store(StoreMemberRequest $request)
     {
+        $plan = MembershipPlan::find($request->input('planId'));
+        $start_date = new DateTime($request->input('start'));
+        $end ="";
+
+        switch ($plan['duration']){
+            case 'daily':
+                $start_date->modify("+1 day");
+                $end = $start_date->format('Y-m-d');
+                break;
+            case 'weekly':
+                $start_date->modify("+1 week");
+                $end = $start_date->format('Y-m-d');
+                break;
+            case 'monthly':
+                $start_date->modify("+1 month");
+                $end = $start_date->format('Y-m-d');
+                break;
+            case 'yearly':
+                $start_date = new DateTime('2024-02-14');
+                $start_date->modify("+1 year");
+                $end = $start_date->format('Y-m-d');
+                break;
+        }
         //
         $member = Member::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'phone_number' => $request->input('phone_number'),
-            'membership_plan_id' => $request->input('membership_plan_id'),
-            'start_date' => date('Y-m-d', strtotime($request->input('start_date'))),
-            'end_date' => date('Y-m-d', strtotime($request->input('end_date'))),
+            'phone_number' => $request->input('phone'),
+            'membership_plan_id' => $request->input('planId'),
+            'start_date' => date('Y-m-d', strtotime($request->input('start'))),
+            'end_date' => date('Y-m-d', strtotime($end)),
         ]);
 
         return new MemberResource($member);

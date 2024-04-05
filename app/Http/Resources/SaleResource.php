@@ -22,7 +22,8 @@ class SaleResource extends JsonResource
           'createdAt' => $this->created_at,
           'narration' => $this->narration,
           'service' => $this->service,
-          'paymentMethod' => $this->paymentMethod
+          'paymentMethod' => $this->paymentMethod,
+          'member' => $this->member
         ];
     }
 }

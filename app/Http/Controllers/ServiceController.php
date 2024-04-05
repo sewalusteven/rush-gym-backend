@@ -32,7 +32,11 @@ class ServiceController extends Controller
     public function store(StoreServiceRequest $request)
     {
         //
-        $service = Service::create($request->validated());
+        $service = Service::create([
+            'service' => $request->input('service'),
+            'description' => $request->input('description'),
+            'price' => $request->input('price')
+        ]);
         return new ServiceResource($service);
     }
 

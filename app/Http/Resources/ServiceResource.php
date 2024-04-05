@@ -18,6 +18,7 @@ class ServiceResource extends JsonResource
             'id' => $this->id,
             'service' => $this->service,
             'description' => $this->description,
+            'price' => $this->price,
             'createdAt' => $this->created_at,
             'sales' => SaleResource::collection($this->sales),
         ];

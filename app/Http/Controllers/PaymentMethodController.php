@@ -33,7 +33,8 @@ class PaymentMethodController extends Controller
     {
         //
         $method =  PaymentMethod::create([
-            'method' => $request->input('method')
+            'method' => $request->input('method'),
+            'details' => $request->input('details'),
         ]);
         return new PaymentMethodResource($method);
     }

@@ -17,6 +17,7 @@ class PaymentMethodResource extends JsonResource
         return [
             'id' => $this->id,
             'method' => $this->method,
+            'details' => $this->details,
             'sales' => SaleResource::collection($this->sales),
             'createdAt' => $this->created_at
 

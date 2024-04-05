@@ -6,16 +6,18 @@ use App\Http\Requests\StoreSaleRequest;
 use App\Http\Requests\UpdateSaleRequest;
 use App\Http\Resources\SaleResource;
 use App\Models\Sale;
+use Illuminate\Http\Request;
 
 class SaleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        return SaleResource::collection(Sale::paginate(20));
+        $limit = $request->query('limit', 15);
+        return SaleResource::collection(Sale::paginate($limit));
     }
 
     /**
@@ -31,12 +33,17 @@ class SaleController extends Controller
      */
     public function store(StoreSaleRequest $request)
     {
+        $memberId =  NULL;
+        if($request->input('memberId')){
+            $memberId =  $request->input('memberId');
+        }
         //
         $sale = Sale::create([
             'amount' => $request->input('amount'),
             'service_id' => $request->input('serviceId'),
             'payment_method_id' => $request->input('paymentMethodId'),
             'narration' => $request->input('narration'),
+            'member_id' => $memberId,
         ]);
         return new SaleResource($sale);
     }

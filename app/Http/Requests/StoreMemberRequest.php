@@ -24,9 +24,9 @@ class StoreMemberRequest extends FormRequest
         return [
             'name' => 'required',
             'email' => 'email | nullable',
-            'phone_number' => 'numeric | required',
-            'start_date' => 'required',
-            'end_date' => 'required',
+            'phone' => 'required',
+            'start' => 'required',
+            'planId' => 'required',
         ];
     }
 }
