@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MembershipPlanController;
 use App\Http\Controllers\PaymentMethodController;
@@ -24,8 +25,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('/plans', MembershipPlanController::class);
-Route::apiResource('/members', MemberController::class);
-Route::apiResource('/sales', SaleController::class);
-Route::apiResource('/services', ServiceController::class);
-Route::apiResource('/payment-methods', PaymentMethodController::class);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::apiResource('/plans', MembershipPlanController::class);
+    Route::apiResource('/members', MemberController::class);
+    Route::apiResource('/sales', SaleController::class);
+    Route::apiResource('/services', ServiceController::class);
+    Route::apiResource('/payment-methods', PaymentMethodController::class);
+});
