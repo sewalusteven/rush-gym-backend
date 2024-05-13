@@ -23,7 +23,8 @@ class SaleResource extends JsonResource
           'narration' => $this->narration,
           'service' => $this->service,
           'paymentMethod' => $this->paymentMethod,
-          'member' => $this->member
+          'member' => $this->member,
+          'transaction' => $this->transaction
         ];
     }
 }

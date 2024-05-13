@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSaleRequest;
 use App\Http\Requests\UpdateSaleRequest;
 use App\Http\Resources\SaleResource;
+use App\Http\Traits\HttpResponses;
 use App\Models\Sale;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class SaleController extends Controller
 {
+    use HttpResponses;
     /**
      * Display a listing of the resource.
      */
@@ -20,12 +23,13 @@ class SaleController extends Controller
         return SaleResource::collection(Sale::paginate($limit));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+
+    public function counts()
     {
         //
+        $daily =  Sale::getDailySales();
+        $monthly = Sale::getMonthlySales();
+        return $this->success(['daily' => $daily, 'monthly' => $monthly]);
     }
 
     /**
@@ -37,6 +41,13 @@ class SaleController extends Controller
         if($request->input('memberId')){
             $memberId =  $request->input('memberId');
         }
+
+        $transaction = Transaction::create([
+            'amount' => $request->amount,
+            'narration' => $request->narration,
+            'type' => 'credit'
+        ]);
+
         //
         $sale = Sale::create([
             'amount' => $request->input('amount'),
@@ -44,6 +55,7 @@ class SaleController extends Controller
             'payment_method_id' => $request->input('paymentMethodId'),
             'narration' => $request->input('narration'),
             'member_id' => $memberId,
+            'transaction_id' => $transaction['id']
         ]);
         return new SaleResource($sale);
     }

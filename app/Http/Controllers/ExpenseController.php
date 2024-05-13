@@ -4,16 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\UpdateExpenseRequest;
+use App\Http\Resources\ExpenseResource;
+use App\Http\Traits\HttpResponses;
 use App\Models\Expense;
+use App\Models\Transaction;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ExpenseController extends Controller
 {
+    use HttpResponses;
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
+        return ExpenseResource::collection(Expense::paginate($request->perPage));
     }
 
     /**
@@ -30,6 +37,22 @@ class ExpenseController extends Controller
     public function store(StoreExpenseRequest $request)
     {
         //
+        $transaction = Transaction::create([
+            'amount' => $request->amount,
+            'narration' => $request->narration,
+            'type' => 'debit'
+        ]);
+
+        $expense = Expense::create([
+            'amount' => $request->amount,
+            'narration' => $request->narration,
+            'user_id' => Auth::id(),
+            'transaction_id' => $transaction['id']
+        ]);
+
+
+
+        return $this->success($expense,'expense added successfully');
     }
 
     /**
@@ -51,16 +74,27 @@ class ExpenseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateExpenseRequest $request, Expense $expense)
+    public function update(UpdateExpenseRequest $request, int $expense)
     {
         //
+        $expense = Expense::findOrFail($expense);
+        $expense->update([
+            'amount' => $request->amount,
+            'narration' => $request->narration,
+            'user_id' => Auth::id(),
+        ]);
+
+        return $this->success($expense,'expense updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Expense $expense)
+    public function destroy(int $expense)
     {
         //
+        $expense = Expense::findOrFail($expense);
+        $expense->delete();
+
     }
 }

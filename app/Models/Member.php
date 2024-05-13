@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Member extends Model
 {
@@ -29,4 +30,25 @@ class Member extends Model
     {
         return $this->hasMany(Sale::class);
     }
+
+    public static function getDailyMembers()
+    {
+        return DB::table('members')
+            ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as members'))
+            ->groupBy('date')
+            ->orderBy('date', 'DESC')
+            ->get();
+    }
+
+
+    public static function getMonthlyMembers()
+    {
+        return DB::table('members')
+            ->select(DB::raw('MONTH(created_at) as month, YEAR(created_at) as year'), DB::raw('count(*) as members'))
+            ->groupBy('month', 'year')
+            ->orderBy('year', 'DESC')
+            ->orderBy('month', 'DESC')
+            ->get();
+    }
+
 }

@@ -11,7 +11,7 @@ class UpdateTransactionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,6 +23,8 @@ class UpdateTransactionRequest extends FormRequest
     {
         return [
             //
+            'amount' => ['numeric','required'],
+            'narration' => ['required']
         ];
     }
 }

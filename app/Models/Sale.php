@@ -9,11 +9,15 @@ use Illuminate\Support\Facades\DB;
 class Sale extends Model
 {
     use HasFactory;
-    protected $fillable = ['amount','service_id','payment_method_id','narration','member_id'];
+    protected $fillable = ['amount','service_id','payment_method_id','narration','member_id','transaction_id'];
 
     public function service(){
         return $this->belongsTo(Service::class);
     }
+    public function transaction(){
+        return $this->belongsTo(Transaction::class);
+    }
+
     public function paymentMethod(){
         return $this->belongsTo(PaymentMethod::class);
     }
