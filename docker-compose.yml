@@ -1,0 +1,34 @@
+version: '2'
+services:
+    app:
+        build: .
+        ports:
+            - "80:8000"
+        volumes:
+            - .:/app
+        env_file: .env
+        working_dir: /app
+        command: bash -c 'php artisan serve --host 0.0.0.0'
+        depends_on:
+            - rush
+    rush:
+        image: "mysql:5.7"
+        environment:
+            - MYSQL_ROOT_PASSWORD=Admin2024
+            - MYSQL_DATABASE=rush
+            - MYSQL_USER=root
+            - MYSQL_PASSWORD=Admin2024
+        volumes:
+            - ./data/:/var/lib/mysql
+        ports:
+            - "3306:3306"
+    phpmyadmin:
+        depends_on:
+            - rush
+        image: phpmyadmin/phpmyadmin
+        restart: always
+        ports:
+            - 8090:80
+        environment:
+            PMA_HOST: rush
+            MYSQL_ROOT_PASSWORD: Admin2024
