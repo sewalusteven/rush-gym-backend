@@ -34,13 +34,19 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('/plans', MembershipPlanController::class);
+
+    Route::get('/members/counts', [MemberController::class, 'counts']);
     Route::apiResource('/members', MemberController::class);
+
     Route::get('/sales/counts', [SaleController::class,'counts']);
     Route::apiResource('/sales', SaleController::class);
 
     Route::apiResource('/services', ServiceController::class);
     Route::apiResource('/payment-methods', PaymentMethodController::class);
+
     Route::get('/transactions/counts', [TransactionController::class, 'counts']);
     Route::apiResource('/transactions', TransactionController::class);
+
+    Route::get('/expenses/counts', [ExpenseController::class, 'counts']);
     Route::apiResource('/expenses', ExpenseController::class);
 });

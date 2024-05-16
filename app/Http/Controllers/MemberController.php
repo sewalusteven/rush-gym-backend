@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreMemberRequest;
 use App\Http\Requests\UpdateMemberRequest;
 use App\Http\Resources\MemberResource;
+use App\Http\Traits\HttpResponses;
 use App\Models\Member;
 use App\Models\MembershipPlan;
 use DateTime;
@@ -12,6 +13,7 @@ use Exception;
 
 class MemberController extends Controller
 {
+    use HttpResponses;
     /**
      * Display a listing of the resource.
      */
@@ -85,6 +87,14 @@ class MemberController extends Controller
     public function edit(Member $member)
     {
         //
+    }
+    public function counts()
+    {
+        //
+        $daily =  Member::getDailyMembers();
+        $monthly = Member::getMonthlyMembers();
+        $total = Member::count();
+        return $this->success(['daily' => $daily, 'monthly' => $monthly, 'total' => $total]);
     }
 
     /**

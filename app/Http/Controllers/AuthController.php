@@ -40,10 +40,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return $this->success([
-            'user' => $user,
-            'token' => $user->createToken('API Token')->plainTextToken
-        ]);
+        return $this->success(['user' => $user]);
     }
 
     public function logout()

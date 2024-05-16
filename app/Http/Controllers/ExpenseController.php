@@ -19,16 +19,23 @@ class ExpenseController extends Controller
      */
     public function index(Request $request)
     {
-        //
-        return ExpenseResource::collection(Expense::paginate($request->perPage));
+        $expenses = Expense::orderBy('created_at','desc')->paginate($request->input('perPage'));
+        if($request->input('search')){
+            $expenses = Expense::where('narration','like',"%".$request->input('search')."%")->orderBy('created_at','desc')->paginate($request->input('perPage'));
+        }
+
+        return ExpenseResource::collection($expenses);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function counts()
     {
         //
+        $daily =  Expense::getDailyExpenses();
+        $monthly = Expense::getMonthlyExpenses();
+        return $this->success(['daily' => $daily, 'monthly' => $monthly]);
     }
 
     /**

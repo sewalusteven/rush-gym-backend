@@ -19,8 +19,12 @@ class SaleController extends Controller
     public function index(Request $request)
     {
         //
-        $limit = $request->query('limit', 15);
-        return SaleResource::collection(Sale::paginate($limit));
+        $sales = Sale::orderBy('created_at','desc')->paginate($request->input('perPage'));
+        if($request->input('search')){
+            $sales = Sale::where('narration','like',"%".$request->input('search')."%")->orderBy('created_at','desc')->paginate($request->input('perPage'));
+        }
+
+        return SaleResource::collection($sales);
     }
 
 
