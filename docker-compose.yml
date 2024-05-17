@@ -9,7 +9,6 @@ services:
             - .:/var/www/html
         ports:
             - "8000:80"
-            - "8000:443"
 
         env_file:
             -   .env
