@@ -28,8 +28,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
-
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -49,4 +47,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('/expenses/counts', [ExpenseController::class, 'counts']);
     Route::apiResource('/expenses', ExpenseController::class);
+
+    Route::get('/users', [AuthController::class,'index']);
+    Route::post('/users/update', [AuthController::class,'update']);
+    Route::put('/users/change-password', [AuthController::class,'changePassword']);
+    Route::post('/users/register', [AuthController::class, 'register']);
 });
