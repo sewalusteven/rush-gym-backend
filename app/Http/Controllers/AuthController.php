@@ -102,7 +102,7 @@ class AuthController extends Controller
         }
 
         $user->update([
-            'password' => Hash::make($request->input('newPassword')),
+            'password' => Hash::make($request->input('password')),
         ]);
 
         return $this->success($user, "Password updated successfully", 200);
