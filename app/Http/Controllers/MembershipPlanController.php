@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreMembershipPlanRequest;
 use App\Http\Requests\UpdateMembershipPlanRequest;
 use App\Http\Resources\MembershipPlanResource;
+use App\Http\Traits\HttpResponses;
 use App\Models\MembershipPlan;
 
 class MembershipPlanController extends Controller
 {
+    use HttpResponses;
     /**
      * Display a listing of the resource.
      */
@@ -36,7 +38,8 @@ class MembershipPlanController extends Controller
             'price' => $request->input('price')
         ]);
 
-        return new MembershipPlanResource($plan);
+        $data = new MembershipPlanResource($plan);
+        return $this->success($data,'Membership Plan Added Successfully');
     }
 
     /**
@@ -70,7 +73,9 @@ class MembershipPlanController extends Controller
             'duration' => $request->input('duration'),
             'price' => $request->input('price'),
         ]);
-        return new MembershipPlanResource($plan);
+
+        $data = new MembershipPlanResource($plan);
+        return $this->success($data,'Membership Plan Added Successfully');
     }
 
     /**
@@ -81,6 +86,6 @@ class MembershipPlanController extends Controller
         //
         $plan = MembershipPlan::findOrFail($membershipPlan);
         $plan->delete();
-        return response(['message' => 'plan deleted successfully']);
+        return $this->success(null,'Membership Plan Deleted Successfully');
     }
 }
