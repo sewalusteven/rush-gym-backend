@@ -23,10 +23,8 @@ class StoreMemberRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'email' => 'email | nullable',
-            'phone' => 'required',
-            'start' => 'required',
-            'planId' => 'required',
+            'email' => 'nullable|email',
+            'phone' => 'nullable',
         ];
     }
 }

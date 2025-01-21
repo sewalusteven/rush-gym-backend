@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\ActivePlanController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\MemberController;
@@ -52,4 +53,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/users/update', [AuthController::class,'update']);
     Route::put('/users/change-password', [AuthController::class,'changePassword']);
     Route::post('/users/register', [AuthController::class, 'register']);
+
+    Route::post('/active-plans/{active_plan}/deposit',[ActivePlanController::class, 'addPaymentOnPlan']);
+    Route::apiResource('/active-plans', ActivePlanController::class);
 });

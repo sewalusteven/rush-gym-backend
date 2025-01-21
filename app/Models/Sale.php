@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class Sale extends Model
 {
     use HasFactory;
-    protected $fillable = ['amount','service_id','payment_method_id','narration','member_id','transaction_id'];
+    protected $fillable = ['amount','service_id','payment_method_id','narration','member_id','transaction_id','sale_date'];
 
     public function service(){
         return $this->belongsTo(Service::class);

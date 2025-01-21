@@ -10,7 +10,7 @@ class Expense extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['amount','narration','user_id','transaction_id'];
+    protected $fillable = ['amount','narration','user_id','transaction_id','expense_date'];
 
     public function transaction(){
         return $this->belongsTo(Transaction::class);

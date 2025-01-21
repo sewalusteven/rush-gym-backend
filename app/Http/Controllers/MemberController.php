@@ -37,40 +37,14 @@ class MemberController extends Controller
      */
     public function store(StoreMemberRequest $request)
     {
-        $plan = MembershipPlan::find($request->input('planId'));
-        $start_date = new DateTime($request->input('start'));
-        $end ="";
 
-        switch ($plan['duration']){
-            case 'daily':
-                $start_date->modify("+1 day");
-                $end = $start_date->format('Y-m-d');
-                break;
-            case 'weekly':
-                $start_date->modify("+1 week");
-                $end = $start_date->format('Y-m-d');
-                break;
-            case 'monthly':
-                $start_date->modify("+1 month");
-                $end = $start_date->format('Y-m-d');
-                break;
-            case 'yearly':
-                $start_date = new DateTime('2024-02-14');
-                $start_date->modify("+1 year");
-                $end = $start_date->format('Y-m-d');
-                break;
-        }
-        //
         $member = Member::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'phone_number' => $request->input('phone'),
-            'membership_plan_id' => $request->input('planId'),
-            'start_date' => date('Y-m-d', strtotime($request->input('start'))),
-            'end_date' => date('Y-m-d', strtotime($end)),
+            'phone_number' => $request->input('phone')
         ]);
 
-        return new MemberResource($member);
+        return $this->success(new MemberResource($member), 'Member Added Successfully', 200);
     }
 
     /**
@@ -100,19 +74,15 @@ class MemberController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMemberRequest $request, int $member)
+    public function update(UpdateMemberRequest $request, Member $member)
     {
         //
-        $member = Member::findOrFail($member);
+        $request =  $request->validated();
         $member->update([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'phone_number' => $request->input('phone_number'),
-            'membership_plan_id' => $request->input('membership_plan_id'),
-            'start_date' => $request->input('start_date'),
-            'end_date' => $request->input('end_date'),
+            'email' => $request['email'],
+            'phone_number' => $request['phone'],
         ]);
-        return new MemberResource($member);
+        return $this->success(new MemberResource($member), 'Member Updated Successfully', 200);
     }
 
     /**

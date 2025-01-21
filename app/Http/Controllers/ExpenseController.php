@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Enums\TransactionCategory;
 use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\UpdateExpenseRequest;
 use App\Http\Resources\ExpenseResource;
 use App\Http\Traits\HttpResponses;
 use App\Models\Expense;
+use App\Models\PaymentMethod;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,20 +46,25 @@ class ExpenseController extends Controller
     public function store(StoreExpenseRequest $request)
     {
         //
+        $request = $request->validated();
+        $paymentMethod = PaymentMethod::find($request['paymentMethodId']);
+
         $transaction = Transaction::create([
-            'amount' => $request->amount,
-            'narration' => $request->narration,
-            'type' => 'debit'
+            'amount' => $request['amount'],
+            'narration' => $request['narration'],
+            'type' => 'debit',
+            'transaction_date' => date('Y-m-d', strtotime($request['paymentDate'])),
+            'category' => TransactionCategory::EXPENSE,
+            'payment_method_id' => $paymentMethod['id'],
         ]);
 
         $expense = Expense::create([
-            'amount' => $request->amount,
-            'narration' => $request->narration,
+            'amount' => $request['amount'],
+            'narration' => $request['narration'],
             'user_id' => Auth::id(),
-            'transaction_id' => $transaction['id']
+            'transaction_id' => $transaction['id'],
+            'expense_date' => date('Y-m-d', strtotime($request['paymentDate']))
         ]);
-
-
 
         return $this->success($expense,'expense added successfully');
     }

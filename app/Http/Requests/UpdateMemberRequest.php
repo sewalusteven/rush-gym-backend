@@ -23,7 +23,7 @@ class UpdateMemberRequest extends FormRequest
     {
         return [
             'email' => 'email | nullable',
-            'phone_number' => 'numeric',
+            'phone' => 'string | nullable',
         ];
     }
 }

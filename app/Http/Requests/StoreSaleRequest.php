@@ -24,8 +24,10 @@ class StoreSaleRequest extends FormRequest
         return [
             //
             'amount' => 'required | numeric',
-            'serviceId' => 'required | numeric',
-            'paymentMethodId' => 'required | numeric',
+            'serviceId' => 'required |exists:services,id',
+            'paymentMethodId' => 'required |exists:payment_methods,id',
+            'memberId' => 'exists:members,id|nullable',
+            'paymentDate' => 'required | date'
         ];
     }
 }

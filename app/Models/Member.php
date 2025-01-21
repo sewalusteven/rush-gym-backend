@@ -31,6 +31,10 @@ class Member extends Model
         return $this->hasMany(Sale::class);
     }
 
+    public function activePlans(){
+        return $this->hasMany(ActivePlan::class);
+    }
+
     public static function getDailyMembers()
     {
         return DB::table('members')

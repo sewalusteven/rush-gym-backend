@@ -15,4 +15,9 @@ class MembershipPlan extends Model
     {
         return $this->hasMany(Member::class);
     }
+
+
+    public function active_plans(){
+        return $this->hasMany(ActivePlan::class);
+    }
 }

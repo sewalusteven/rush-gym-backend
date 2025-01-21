@@ -10,7 +10,7 @@ class Transaction extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['amount','narration','type'];
+    protected $fillable = ['amount','narration','type', 'category','transaction_date','payment_method_id'];
 
     public static function getDailyTransactions()
     {
@@ -19,6 +19,12 @@ class Transaction extends Model
             ->groupBy('date')
             ->orderBy('date', 'DESC')
             ->get();
+    }
+
+    public function paymentMethod()
+    {
+        return $this->belongsTo(PaymentMethod::class);
+
     }
 
 
