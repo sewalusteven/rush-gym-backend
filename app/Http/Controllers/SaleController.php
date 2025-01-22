@@ -72,7 +72,7 @@ class SaleController extends Controller
             'transaction_id' => $transaction['id'],
             'sale_date' => date('Y-m-d', strtotime($request['paymentDate']))
         ]);
-        return new SaleResource($sale);
+        return $this->success(new SaleResource($sale),'sale added successfully');
     }
 
     /**
