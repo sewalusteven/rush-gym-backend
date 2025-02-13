@@ -104,10 +104,6 @@ class ActivePlanController extends Controller
             $endDate = "";
             $startDate = new DateTime($request['startDate']);
 
-            if($startDate < now()){
-                return $this->error([], 'You cannot renew a plan in the past', 501 );
-            }
-
             switch ($plan->duration) {
                 case 'daily':
                     $endDate = $startDate->modify("+1 day")->format('Y-m-d');
@@ -198,9 +194,6 @@ class ActivePlanController extends Controller
 
             //Update existing active plan
             $startDate = new DateTime($request['startDate']);
-            if ($startDate < now()) {
-                return $this->error([], 'You cannot update a plan with a start date in the past', 501);
-            }
 
             $endDate = '';
             switch ($plan->duration) {
