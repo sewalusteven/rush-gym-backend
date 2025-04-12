@@ -78,9 +78,9 @@ class ActivePlanController extends Controller
             $totalExcess = $existingOverpaidPlans->sum();
 
             //return an error if there is an existing running plan
-            if($member->activePlans()->where('is_active', true)->count() > 0){
-                return $this->error([], 'You have an active plan. Please clear it first', 501 );
-            }
+//            if($member->activePlans()->where('is_active', true)->count() > 0){
+//                return $this->error([], 'You have an active plan. Please clear it first', 501 );
+//            }
 
             ActivePlan::where('member_id', $request['memberId'])
                 ->where('is_active', true)
@@ -104,9 +104,9 @@ class ActivePlanController extends Controller
             $endDate = "";
             $startDate = new DateTime($request['startDate']);
 
-            if($startDate < now()){
-                return $this->error([], 'You cannot renew a plan in the past', 501 );
-            }
+//            if($startDate < now()){
+//                return $this->error([], 'You cannot renew a plan in the past', 501 );
+//            }
 
             switch ($plan->duration) {
                 case 'daily':

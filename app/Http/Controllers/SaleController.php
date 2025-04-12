@@ -75,6 +75,25 @@ class SaleController extends Controller
         return $this->success(new SaleResource($sale),'sale added successfully');
     }
 
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(int $sale)
+    {
+        //
+        $sale =  Sale::findOrFail($sale);
+
+        $transaction = Transaction::query();
+        $transaction->where('type', 'credit');
+        $transaction->where('amount', $sale['amount']);
+        $transaction->where('transaction_date', $sale['sale_date']);
+        $transaction->delete();
+
+        $sale->delete();
+        return response(['message' => 'transaction deleted successfully']);
+    }
+
     /**
      * Display the specified resource.
      */
@@ -109,14 +128,4 @@ class SaleController extends Controller
         return new SaleResource($sale);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(int $sale)
-    {
-        //
-        $sale =  Sale::findOrFail($sale);
-        $sale->delete();
-        return response(['message' => 'transaction deleted successfully']);
-    }
 }

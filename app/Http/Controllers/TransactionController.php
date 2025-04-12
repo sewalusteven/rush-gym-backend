@@ -121,6 +121,15 @@ class TransactionController extends Controller
     {
         //
         $toBeDeleted =  Transaction::findOrFail($transaction);
+        if($toBeDeleted['type'] == 'credit'){
+            $sale = Sale::query();
+            $sale->where('transaction_id', $transaction);
+            $sale->delete();
+        }else{
+            $expense =  Expense::query();
+            $expense->where('transaction_id', $transaction);
+            $expense->delete();
+        }
         $toBeDeleted->delete();
         return $this->success($toBeDeleted, "transaction deleted");
     }

@@ -70,6 +70,26 @@ class ExpenseController extends Controller
     }
 
     /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(int $expense)
+    {
+        //
+        $expense = Expense::findOrFail($expense);
+
+        $transaction = Transaction::query();
+        $transaction->where('category', TransactionCategory::EXPENSE);
+        $transaction->where('narration', $expense['narration']);
+        $transaction->where('amount', $expense['amount']);
+        $transaction->where('transaction_date', $expense['expense_date']);
+        $transaction->delete();
+
+        $expense->delete();
+        return response(['message' => 'transaction deleted successfully']);
+
+    }
+
+    /**
      * Display the specified resource.
      */
     public function show(Expense $expense)
@@ -101,14 +121,5 @@ class ExpenseController extends Controller
         return $this->success($expense,'expense updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(int $expense)
-    {
-        //
-        $expense = Expense::findOrFail($expense);
-        $expense->delete();
 
-    }
 }
