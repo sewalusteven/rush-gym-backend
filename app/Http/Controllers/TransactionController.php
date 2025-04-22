@@ -108,7 +108,6 @@ class TransactionController extends Controller
         $transaction->update([
             'amount' => $request->amount,
             'narration' => $request->narration,
-            'type' => $request->type
         ]);
 
         if($transaction['type'] == 'credit'){
