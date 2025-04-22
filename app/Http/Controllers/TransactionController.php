@@ -111,6 +111,22 @@ class TransactionController extends Controller
             'type' => $request->type
         ]);
 
+        if($transaction['type'] == 'credit'){
+            $sale = Sale::query();
+            $sale->where('transaction_id', $transaction['id'])->get();
+            $sale->update([
+                'amount' => $request->amount,
+                'narration' => $request->narration,
+            ]);
+        }else{
+            $expense =  Expense::query();
+            $expense->where('transaction_id', $transaction['id'])->get();
+            $expense->update([
+                'amount' => $request->amount,
+                'narration' => $request->narration,
+            ]);
+        }
+
         return $this->success($transaction,'transaction updated successfully');
     }
 
